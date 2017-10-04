@@ -5,7 +5,7 @@ import org.springframework.http.HttpStatus;
 
 public enum ApplicationMessageKey {
 
-	NOT_FOUND("NOT FOUND", HttpStatus.NOT_FOUND);
+	NOT_FOUND("404 - NOT FOUND", HttpStatus.NOT_FOUND);
 
 	String key;
 	HttpStatus httpStatus;

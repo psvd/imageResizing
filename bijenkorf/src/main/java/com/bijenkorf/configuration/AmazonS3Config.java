@@ -4,8 +4,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-public class AmazonS3Config {
+public class AmazonS3Config {	
 	
+	@Value("${aws.s3.bucketName}")
 	private String bucketName;
 	@Value("${aws.s3.endpoint}")
 	private String endpoint;	
@@ -14,6 +15,7 @@ public class AmazonS3Config {
 	@Value("${aws.secretkey}")
 	private String secretkey;
 
+	
 	public String getBucketName() {
 		return bucketName;
 	}

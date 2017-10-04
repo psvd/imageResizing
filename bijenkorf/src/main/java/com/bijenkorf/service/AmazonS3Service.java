@@ -1,10 +1,15 @@
 package com.bijenkorf.service;
 
-import com.bijenkorf.domain.Image;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
 
-public interface AmazonS3Service {	
+import com.amazonaws.services.s3.model.S3Object;
+
+public interface AmazonS3Service {
 	
 	void deleteImage(String predefinedTypeName, String reference);
-	void saveImage(Image optimizedImage);
-	byte[] getImage(String predefinedTypeName, String dummySeoName, String reference);
+	void uploadImage(BufferedImage bufferedImage, String predefinedTypeName, String reference) throws IOException;
+	void downloadImage(String predefinedTypeName, String reference);
+	S3Object downloadOriginalImage(String reference);
+	boolean isOriginalImageExist(String predefinedTypeName, String reference);	
 }

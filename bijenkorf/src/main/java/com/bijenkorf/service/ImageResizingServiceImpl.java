@@ -2,13 +2,14 @@ package com.bijenkorf.service;
 
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.IOException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.amazonaws.services.appstream.model.Application;
+import com.bijenkorf.configuration.DatabaseConfiguration;
 import com.bijenkorf.domain.Image;
 import com.bijenkorf.enumerator.ApplicationMessageKey;
 import com.bijenkorf.exception.CustomImageException;
@@ -17,27 +18,33 @@ import com.bijenkorf.exception.CustomImageException;
 public class ImageResizingServiceImpl implements ImageResizingService {
 
 	private AmazonS3Service amazonS3Service;	
+
 	private static final Logger LOGGER = LoggerFactory.getLogger(ImageResizingServiceImpl.class);
+	DatabaseConfiguration databaseConfiguration;
+
 
 	@Autowired
-	public ImageResizingServiceImpl(AmazonS3Service amazonS3Service) {		
+	public ImageResizingServiceImpl(AmazonS3Service amazonS3Service, DatabaseConfiguration databaseConfiguration) {		
 		this.amazonS3Service = amazonS3Service;		
+		this.databaseConfiguration = databaseConfiguration;
 	}
 
 	@Override
-	public File getImage(String predefinedTypeName, String dummySeoName, String reference) {
-		File optimizedImage = null;
-		if (isPredefinedTypeExist(predefinedTypeName)) {
-			//optimizedImage = amazonS3Service.getImage(predefinedTypeName, dummySeoName, reference);
+	public File downloadImage(String predefinedTypeName, String reference) throws CustomImageException {
+		// TODO Auto-generated method stub		
+		checkPredefinedTypeExist(predefinedTypeName);
+		amazonS3Service.downloadImage(predefinedTypeName, reference);
+		return null;
+	}
 
-			if (optimizedImage == null) {
-				//optimizedImage = optimizeImage(reference);
-			}
-			
-			//http://www.javaroots.com/2013/05/how-to-upload-and-download-images-in.html
 
-		}
-		return optimizedImage;
+	@Override
+	public void uploadImage(BufferedImage bufferedImage, String predefinedTypeName, String reference) {
+		try {
+			amazonS3Service.uploadImage(bufferedImage, predefinedTypeName, reference);
+		} catch (IOException e) {
+			LOGGER.warn ("action:{}, request:{}", "checkPredefinedTypeExist", predefinedTypeName); 
+		} 
 	}
 
 	@Override
@@ -45,36 +52,35 @@ public class ImageResizingServiceImpl implements ImageResizingService {
 		amazonS3Service.deleteImage(predefinedTypeName, reference);
 	}
 
-	private byte[] getOriginalImage(String reference) {		
-		byte[] originalImage = amazonS3Service.getImage("original", null, reference);
-		if (originalImage == null) {
-			//TODO - Implement method to get the original image from DB
-		}		
-		return originalImage;
-	}
-
-	@Override
-	public BufferedImage optimizeImage(BufferedImage originalImage, Image image, int type) {
-		BufferedImage resizedImage = new BufferedImage(image.getPredefinedType().getPredefinedImageTypeAttribute().getWidth(), 
-				image.getPredefinedType().getPredefinedImageTypeAttribute().getWidth(), type);
-
-		return resizedImage;
-	}
-
-	@Override
-	public boolean isPredefinedTypeExist(String predefinedTypeName) {
-		Boolean result = false;
-		if (!result) {
-			//throw new CustomImageException(ApplicationMessageKey.NOT_FOUND);
-			LOGGER.info("action:{}, request:{}", "isPredefinedTypeExist", predefinedTypeName); 
-		}
-
-		return false;
-	}
-
 	@Override
 	public void updatePredefinedImageType(String predefinedImageTypeName) {
 		// TODO Auto-generated method stub
 
 	}
+
+	@Override
+	public void checkPredefinedTypeExist(String predefinedTypeName) throws CustomImageException {	
+		
+		LOGGER.info("action:{}, request:{}", "checkPredefinedTypeExist", predefinedTypeName); 
+		throw new CustomImageException(ApplicationMessageKey.NOT_FOUND);		
+	}
+
+	@Override
+	public File downloadOriginalImage(String reference) {	
+		return null;
+	}
+	
+	@Override
+	public Image findImageByReference(String reference) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	private boolean isOriginalImageExistS3(String reference) {	
+		return false;
+	}
+
+	private BufferedImage optimizeImage(BufferedImage bufferedImage, String reference) {		
+		return null;
+	}	
 }

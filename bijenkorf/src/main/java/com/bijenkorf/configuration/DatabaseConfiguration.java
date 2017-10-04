@@ -7,7 +7,7 @@ import org.springframework.context.annotation.Configuration;
 public class DatabaseConfiguration {
 	@Value("${logdb.endpoint}")
 	private String endpoint;	
-	@Value("${logdb.nam}")
+	@Value("${logdb.name}")
 	private String name;
 	@Value("${logdb.username}")	
 	private String username;	
