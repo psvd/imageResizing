@@ -1,5 +1,6 @@
 package com.bijenkorf.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -14,6 +15,7 @@ public class ImageController {
 
 	private ImageResizingService imageService;	
 
+	@Autowired
 	public ImageController(ImageResizingService imageService) {
 		this.imageService = imageService;
 	}
@@ -30,6 +32,4 @@ public class ImageController {
 
 		imageService.deleteImage(predefinedTypeName, reference);
 	}
-
-
 }

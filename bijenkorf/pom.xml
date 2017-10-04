@@ -53,6 +53,11 @@
 			<version>1.11.206</version>
 		</dependency>
 
+		<dependency>
+			<groupId>commons-io</groupId>
+			<artifactId>commons-io</artifactId>
+			<version>2.3</version>
+		</dependency>
 	</dependencies>
 
 	<build>

@@ -1,14 +1,18 @@
 package com.bijenkorf.configuration;
 
-import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-@ConfigurationProperties(prefix = "aws")
 public class AmazonS3Config {
+	
 	private String bucketName;
-	private String endpoint;
-	private String region;
+	@Value("${aws.s3.endpoint}")
+	private String endpoint;	
+	@Value("${aws.accesskey}")
+	private String accesskey;
+	@Value("${aws.secretkey}")
+	private String secretkey;
 
 	public String getBucketName() {
 		return bucketName;
@@ -26,12 +30,19 @@ public class AmazonS3Config {
 		this.endpoint = endpoint;
 	}
 
-	public String getRegion() {
-		return region;
+	public String getAccesskey() {
+		return accesskey;
 	}
 
-	public void setRegion(String region) {
-		this.region = region;
+	public void setAccesskey(String accesskey) {
+		this.accesskey = accesskey;
 	}
 
+	public String getSecretkey() {
+		return secretkey;
+	}
+
+	public void setSecretkey(String secretkey) {
+		this.secretkey = secretkey;
+	}
 }
