@@ -1,5 +1,8 @@
 package com.bijenkorf.service;
 
+import java.awt.image.BufferedImage;
+import java.io.File;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,11 +25,17 @@ public class ImageResizingServiceImpl implements ImageResizingService {
 	}
 
 	@Override
-	public Image getImage(String predefinedTypeName, String dummySeoName, String reference) {
-		Image optimizedImage = amazonS3Service.getImage(predefinedTypeName, dummySeoName, reference);
+	public File getImage(String predefinedTypeName, String dummySeoName, String reference) {
+		File optimizedImage = null;
+		if (isPredefinedTypeExist(predefinedTypeName)) {
+			//optimizedImage = amazonS3Service.getImage(predefinedTypeName, dummySeoName, reference);
 
-		if (optimizedImage == null) {
-			optimizedImage = optimizeImage(reference);
+			if (optimizedImage == null) {
+				//optimizedImage = optimizeImage(reference);
+			}
+			
+			//http://www.javaroots.com/2013/05/how-to-upload-and-download-images-in.html
+
 		}
 		return optimizedImage;
 	}
@@ -36,33 +45,28 @@ public class ImageResizingServiceImpl implements ImageResizingService {
 		amazonS3Service.deleteImage(predefinedTypeName, reference);
 	}
 
-	private Image getOriginalImage(String reference) {		
-		Image originalImage = amazonS3Service.getImage("original", null, reference);
+	private byte[] getOriginalImage(String reference) {		
+		byte[] originalImage = amazonS3Service.getImage("original", null, reference);
 		if (originalImage == null) {
 			//TODO - Implement method to get the original image from DB
 		}		
 		return originalImage;
 	}
 
-	private Image optimizeImage(Image image) {
-		//TODO - Implement method to optimize image
-		return image;
+	@Override
+	public BufferedImage optimizeImage(BufferedImage originalImage, Image image, int type) {
+		BufferedImage resizedImage = new BufferedImage(image.getPredefinedType().getPredefinedImageTypeAttribute().getWidth(), 
+				image.getPredefinedType().getPredefinedImageTypeAttribute().getWidth(), type);
+
+		return resizedImage;
 	}
 
 	@Override
-	public Image optimizeImage(String reference) {
-		Image optimizedImage = optimizeImage(getOriginalImage(reference));
-		amazonS3Service.saveImage(optimizedImage);
-
-		return optimizedImage;
-	}
-
-	@Override
-	public boolean isPredefinedTypeExist(String predefinedImageTypeName) {
+	public boolean isPredefinedTypeExist(String predefinedTypeName) {
 		Boolean result = false;
 		if (!result) {
 			//throw new CustomImageException(ApplicationMessageKey.NOT_FOUND);
-			LOGGER.info("action:{}, request:{}", "isPredefinedTypeExist", predefinedImageTypeName); 
+			LOGGER.info("action:{}, request:{}", "isPredefinedTypeExist", predefinedTypeName); 
 		}
 
 		return false;

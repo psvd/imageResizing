@@ -6,5 +6,5 @@ public interface AmazonS3Service {
 	
 	void deleteImage(String predefinedTypeName, String reference);
 	void saveImage(Image optimizedImage);
-	Image getImage(String predefinedTypeName, String dummySeoName, String reference);
+	byte[] getImage(String predefinedTypeName, String dummySeoName, String reference);
 }

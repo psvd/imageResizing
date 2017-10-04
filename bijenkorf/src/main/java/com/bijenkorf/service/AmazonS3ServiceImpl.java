@@ -54,8 +54,8 @@ public class AmazonS3ServiceImpl implements AmazonS3Service {
 	}	
 
 	@Override
-	public Image getImage(String predefinedTypeName, String dummySeoName, String reference) {
-		// TODO Auto-generated method stub
+	public byte[] getImage(String predefinedTypeName, String dummySeoName, String reference) {
+		// TODO Implement method to get image from AWS S3
 		return null;
 	}
 
