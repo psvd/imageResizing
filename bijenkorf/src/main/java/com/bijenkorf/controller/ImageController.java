@@ -5,6 +5,7 @@ import java.io.File;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -23,10 +24,11 @@ public class ImageController {
 	public ImageController(ImageResizingService imageService) {
 		this.imageService = imageService;
 	}
-
-	@RequestMapping(value = "/image/show/{predefinedTypeName}/{dummySeoName}/?reference={reference}", method=RequestMethod.GET)
-	public void showImage(HttpServletResponse response, @RequestParam("predefinedTypeName") String predefinedTypeName, 
-			@RequestParam("dummySeoName") String dummySeoName, @RequestParam("reference") String reference) throws CustomImageException {		
+	
+	@RequestMapping(value = "/image/show/{predefinedTypeName}/{dummySeoName}", method=RequestMethod.GET)
+	public void showImage(HttpServletResponse response, @PathVariable(value = "predefinedTypeName") String predefinedTypeName, 
+			@PathVariable(value="dummySeoName", required=false) String dummySeoName, 
+			@RequestParam(value = "reference", required= true) String reference) throws CustomImageException {		
 		try {
 			File file = imageService.downloadImage(predefinedTypeName, reference);		
 
@@ -35,8 +37,9 @@ public class ImageController {
 		}	
 	}
 
-	@RequestMapping(value = "/image/flush/{predefinedTypeName}/?reference={reference}", method = RequestMethod.DELETE)
-	public void flushImage(@RequestParam("predefinedTypeName") String predefinedTypeName, @RequestParam("reference") String reference) {
+	@RequestMapping(value = "/image/flush/{predefinedTypeName}", method = RequestMethod.DELETE)
+	public void flushImage(@PathVariable("predefinedTypeName") String predefinedTypeName, 
+			@RequestParam(value = "reference", required = true) String reference) {
 
 		imageService.deleteImage(predefinedTypeName, reference);
 	}
