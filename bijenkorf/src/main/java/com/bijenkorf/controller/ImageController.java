@@ -1,6 +1,6 @@
 package com.bijenkorf.controller;
 
-import java.io.File;
+import java.io.InputStream;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -30,7 +30,7 @@ public class ImageController {
 			@PathVariable(value="dummySeoName", required=false) String dummySeoName, 
 			@RequestParam(value = "reference", required= true) String reference) throws CustomImageException {		
 		try {
-			File file = imageService.downloadImage(predefinedTypeName, reference);		
+			InputStream resizedImage = imageService.downloadImage(predefinedTypeName, reference);		
 
 		} catch (CustomImageException e) {
 			throw new CustomImageException(ApplicationMessageKey.NOT_FOUND);			
