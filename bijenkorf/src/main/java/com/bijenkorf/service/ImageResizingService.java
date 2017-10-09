@@ -9,7 +9,7 @@ import com.bijenkorf.exception.CustomImageException;
 public interface ImageResizingService {
 		
 	InputStream downloadImage(String predefinedTypeName, String reference) throws CustomImageException;
-	void uploadImage(BufferedImage bufferedImage, Image image) throws CustomImageException;
+	Image uploadImage(String reference) throws CustomImageException;
 	void deleteImage(String predefinedTypeName, String reference);		
 	void hasPredefinedTypeName(String predefinedTypeName) throws CustomImageException;		
 	BufferedImage downloadOriginalImageS3(String reference) throws CustomImageException;

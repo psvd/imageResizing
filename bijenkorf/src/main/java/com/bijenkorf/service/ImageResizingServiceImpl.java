@@ -18,6 +18,7 @@ import org.springframework.stereotype.Component;
 import com.amazonaws.services.s3.model.S3ObjectInputStream;
 import com.bijenkorf.configuration.DatabaseConfiguration;
 import com.bijenkorf.domain.Image;
+import com.bijenkorf.domain.PredefinedImageType;
 import com.bijenkorf.enumerator.ApplicationMessageKey;
 import com.bijenkorf.exception.CustomImageException;
 import com.bijenkorf.repository.ImageRepository;
@@ -46,29 +47,24 @@ public class ImageResizingServiceImpl implements ImageResizingService {
 	@Override
 	public InputStream downloadImage(String predefinedTypeName, String reference) throws CustomImageException {	
 		basicValidationCheck(predefinedTypeName, reference);
-
-		InputStream inputStream = amazonS3Service.downloadImage(predefinedTypeName, reference);	
-		
-		if (inputStream == null) {
-			optimizeOriginalImage(reference);
-		}
+		InputStream inputStream = amazonS3Service.downloadImage(predefinedTypeName, reference);
 
 		return inputStream;
 	}
 
 
 	@Override
-	public void uploadImage(BufferedImage bufferedImage, Image image) throws CustomImageException {		
+	public Image uploadImage(String reference) throws CustomImageException {
+		Image image = findImageByReference(reference);
 		try {
-			ByteArrayOutputStream outstream = new ByteArrayOutputStream();
-			ImageIO.write(bufferedImage, image.getPredefinedType().getType().toString(), outstream);
-			byte[] buffer = outstream.toByteArray();
-			InputStream inputStream = new ByteArrayInputStream(buffer);
-			amazonS3Service.uploadImage(inputStream, image.getPredefinedType().getSourceName(), image.getReference());
+			InputStream inputStream = uploadOriginalImage(reference);			
+			amazonS3Service.uploadImage(inputStream, image.getPredefinedType().getPredefinedImageTypeName(), image.getReference());
 		} catch (IOException e) {
-			LOGGER.warn ("action:{}, request:{}", "uploadImage", image.getReference()); 
-			throw new CustomImageException(ApplicationMessageKey.NOT_FOUND);
+			LOGGER.warn ("action:{}, request:{}", "uploadImage", reference); 
+			throw new CustomImageException(ApplicationMessageKey.NOT_FOUND);		
 		} 
+
+		return image;
 	}
 
 	@Override
@@ -80,10 +76,10 @@ public class ImageResizingServiceImpl implements ImageResizingService {
 	@Override
 	public void hasPredefinedTypeName(String predefinedTypeName) throws CustomImageException {	
 
-		if (predefinedImageTypeRepository.findByPredefinedImageTypeName(predefinedTypeName) == null) {
+		/*if (predefinedImageTypeRepository.findByPredefinedImageTypeName(predefinedTypeName) == null) {
 			LOGGER.info("action:{}, request:{}", "hasPredefinedTypeName", predefinedTypeName); 
 			throw new CustomImageException(ApplicationMessageKey.NOT_FOUND);			
-		}		
+		}	*/	
 	}
 
 	@Override
@@ -104,7 +100,7 @@ public class ImageResizingServiceImpl implements ImageResizingService {
 	public BufferedImage downloadOriginalImage(String reference) throws CustomImageException {
 		BufferedImage originalImage = null;
 		try {
-			String absoluteFilePath = databaseConfiguration.getEndpoint() + File.separator + reference;
+			String absoluteFilePath = databaseConfiguration.getRootUrl() + File.separator + reference;
 			originalImage = ImageIO.read(new File(absoluteFilePath));
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -115,39 +111,44 @@ public class ImageResizingServiceImpl implements ImageResizingService {
 	}
 
 	private boolean hasOriginalImageS3(String reference) {	
-		return amazonS3Service.hasOriginalImageS3(reference);
+		//return amazonS3Service.hasOriginalImageS3(reference);
+		return false;
 	}
 
-	private void optimizeOriginalImage(String reference) throws CustomImageException {
+	private InputStream uploadOriginalImage(String reference) throws CustomImageException {
 		BufferedImage originalImage = null;
-		
+
 		if (hasOriginalImageS3(reference)) {
 			originalImage = downloadOriginalImageS3(reference);
 		}else {
 			originalImage = downloadOriginalImage(reference);
 		}
-		
+
 		if (originalImage == null) {
 			throw new CustomImageException(ApplicationMessageKey.NOT_FOUND);
 		} else {
 			Image image = findImageByReference(reference);
 			BufferedImage bufferedImage = resizeImage(originalImage, image);	
 
-			uploadImage(bufferedImage, image);
+			InputStream inputStream = toInputStream(bufferedImage, image.getPredefinedType().getType());
+
+			return inputStream;
 		}		
 	}
 
 	@Override
 	public void hasImageByReference(String reference) throws CustomImageException {
 
-		if (imageRepository.findOne(reference) == null) {
-		
-	
+		/*	if (imageRepository.findOne(reference) == null) {
 
 			LOGGER.info("action:{}, request:{}", "hasImageByReference", reference); 
 			throw new CustomImageException(ApplicationMessageKey.NOT_FOUND);
-		}
+		}*/
 	}	
+
+
+
+
 
 	private BufferedImage resizeImage(BufferedImage originalImage, Image image){
 		BufferedImage resizedImage = new BufferedImage(image.getPredefinedType().getWidth(), 
@@ -168,7 +169,39 @@ public class ImageResizingServiceImpl implements ImageResizingService {
 
 	@Override
 	public Image findImageByReference(String reference) {
-		Image image = imageRepository.findOne(reference);
+		/*Image image = imageRepository.findOne(reference);
+		
+		if (image == null) {
+			throw new CustomImageException(ApplicationMessageKey.NOT_FOUND);
+		}*/
+		
+		Image image = new Image();
+		image.setDummySeoName("LV");
+		PredefinedImageType predefinedType = new PredefinedImageType();
+		predefinedType.setPredefinedImageTypeName("original");
+		predefinedType.setHeight(120);
+		predefinedType.setWidth(120);
+		predefinedType.setType("JPG");
+		predefinedType.setScaleType("crop");
+		predefinedType.setQuality(10);		
+		image.setPredefinedType(predefinedType);
+		image.setReference(reference);
+		image.setPredefinedType(predefinedType);
+
 		return image;
+	}
+
+	private InputStream toInputStream(BufferedImage bufferedImage, String predefinedType) {
+		ByteArrayOutputStream outstream = new ByteArrayOutputStream();
+		try {
+			ImageIO.write(bufferedImage, predefinedType, outstream);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		byte[] buffer = outstream.toByteArray();
+		InputStream inputStream = new ByteArrayInputStream(buffer);
+
+		return inputStream;
 	}
 }

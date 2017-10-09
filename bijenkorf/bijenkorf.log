@@ -848,3 +848,52 @@ Caused by: org.hibernate.hql.internal.ast.QuerySyntaxException: PredefinedImageT
 2017-10-08 14:40:02.028  INFO 14494 --- [RMI TCP Connection(2)-127.0.0.1] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
 2017-10-08 14:40:02.028  INFO 14494 --- [RMI TCP Connection(2)-127.0.0.1] org.hibernate.tool.hbm2ddl.SchemaExport  : HHH000227: Running hbm2ddl schema export
 2017-10-08 14:40:02.036  INFO 14494 --- [RMI TCP Connection(2)-127.0.0.1] org.hibernate.tool.hbm2ddl.SchemaExport  : HHH000230: Schema export complete
+2017-10-09 11:06:28.195  INFO 360 --- [main] com.bijenkorf.Application                : Starting Application on SBX032 with PID 360 (C:\Users\patricia.vieiradiniz\personalWorkspace\imageResizing\bijenkorf\target\classes started by patricia.vieiradiniz in C:\Users\patricia.vieiradiniz\personalWorkspace\imageResizing\bijenkorf)
+2017-10-09 11:06:28.195  INFO 360 --- [main] com.bijenkorf.Application                : The following profiles are active: prod-noverify
+2017-10-09 11:06:28.229  INFO 360 --- [main] ationConfigEmbeddedWebApplicationContext : Refreshing org.springframework.boot.context.embedded.AnnotationConfigEmbeddedWebApplicationContext@71104a4: startup date [Mon Oct 09 11:06:28 CEST 2017]; root of context hierarchy
+2017-10-09 11:06:29.385  INFO 360 --- [main] s.b.c.e.t.TomcatEmbeddedServletContainer : Tomcat initialized with port(s): 8080 (http)
+2017-10-09 11:06:29.397  INFO 360 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2017-10-09 11:06:29.398  INFO 360 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet Engine: Apache Tomcat/8.5.20
+2017-10-09 11:06:29.531  INFO 360 --- [localhost-startStop-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2017-10-09 11:06:29.531  INFO 360 --- [localhost-startStop-1] o.s.web.context.ContextLoader            : Root WebApplicationContext: initialization completed in 1303 ms
+2017-10-09 11:06:29.675  INFO 360 --- [localhost-startStop-1] o.s.b.w.servlet.ServletRegistrationBean  : Mapping servlet: 'dispatcherServlet' to [/]
+2017-10-09 11:06:29.678  INFO 360 --- [localhost-startStop-1] o.s.b.w.servlet.FilterRegistrationBean   : Mapping filter: 'characterEncodingFilter' to: [/*]
+2017-10-09 11:06:29.679  INFO 360 --- [localhost-startStop-1] o.s.b.w.servlet.FilterRegistrationBean   : Mapping filter: 'hiddenHttpMethodFilter' to: [/*]
+2017-10-09 11:06:29.679  INFO 360 --- [localhost-startStop-1] o.s.b.w.servlet.FilterRegistrationBean   : Mapping filter: 'httpPutFormContentFilter' to: [/*]
+2017-10-09 11:06:29.679  INFO 360 --- [localhost-startStop-1] o.s.b.w.servlet.FilterRegistrationBean   : Mapping filter: 'requestContextFilter' to: [/*]
+2017-10-09 11:06:30.110  INFO 360 --- [main] j.LocalContainerEntityManagerFactoryBean : Building JPA container EntityManagerFactory for persistence unit 'default'
+2017-10-09 11:06:30.123  INFO 360 --- [main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [
+	name: default
+	...]
+2017-10-09 11:06:30.184  INFO 360 --- [main] org.hibernate.Version                    : HHH000412: Hibernate Core {5.0.12.Final}
+2017-10-09 11:06:30.186  INFO 360 --- [main] org.hibernate.cfg.Environment            : HHH000206: hibernate.properties not found
+2017-10-09 11:06:30.187  INFO 360 --- [main] org.hibernate.cfg.Environment            : HHH000021: Bytecode provider name : javassist
+2017-10-09 11:06:30.226  INFO 360 --- [main] o.hibernate.annotations.common.Version   : HCANN000001: Hibernate Commons Annotations {5.0.1.Final}
+2017-10-09 11:06:30.339  INFO 360 --- [main] org.hibernate.dialect.Dialect            : HHH000400: Using dialect: org.hibernate.dialect.H2Dialect
+2017-10-09 11:06:30.525  WARN 360 --- [main] org.hibernate.orm.deprecation            : HHH90000014: Found use of deprecated [org.hibernate.id.SequenceHiLoGenerator] sequence-based id generator; use org.hibernate.id.enhanced.SequenceStyleGenerator instead.  See Hibernate Domain Model Mapping Guide for details.
+2017-10-09 11:06:30.743  INFO 360 --- [main] org.hibernate.tool.hbm2ddl.SchemaExport  : HHH000227: Running hbm2ddl schema export
+2017-10-09 11:06:30.759  INFO 360 --- [main] org.hibernate.tool.hbm2ddl.SchemaExport  : HHH000476: Executing import script '/import.sql'
+2017-10-09 11:06:30.759  INFO 360 --- [main] org.hibernate.tool.hbm2ddl.SchemaExport  : HHH000230: Schema export complete
+2017-10-09 11:06:30.794  INFO 360 --- [main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2017-10-09 11:06:36.613  INFO 360 --- [main] s.w.s.m.m.a.RequestMappingHandlerAdapter : Looking for @ControllerAdvice: org.springframework.boot.context.embedded.AnnotationConfigEmbeddedWebApplicationContext@71104a4: startup date [Mon Oct 09 11:06:28 CEST 2017]; root of context hierarchy
+2017-10-09 11:06:36.679  INFO 360 --- [main] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped "{[/image/show/{predefinedTypeName}/{dummySeoName}],methods=[GET]}" onto public void com.bijenkorf.controller.ImageController.showImage(javax.servlet.http.HttpServletResponse,java.lang.String,java.lang.String,java.lang.String) throws com.bijenkorf.exception.CustomImageException
+2017-10-09 11:06:36.680  INFO 360 --- [main] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped "{[/image/flush/{predefinedTypeName}],methods=[DELETE]}" onto public void com.bijenkorf.controller.ImageController.flushImage(java.lang.String,java.lang.String)
+2017-10-09 11:06:36.680  INFO 360 --- [main] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped "{[/image/imageResizing],methods=[PUT]}" onto public void com.bijenkorf.controller.ImageController.saveImage()
+2017-10-09 11:06:36.683  INFO 360 --- [main] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped "{[/error]}" onto public org.springframework.http.ResponseEntity<java.util.Map<java.lang.String, java.lang.Object>> org.springframework.boot.autoconfigure.web.BasicErrorController.error(javax.servlet.http.HttpServletRequest)
+2017-10-09 11:06:36.683  INFO 360 --- [main] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped "{[/error],produces=[text/html]}" onto public org.springframework.web.servlet.ModelAndView org.springframework.boot.autoconfigure.web.BasicErrorController.errorHtml(javax.servlet.http.HttpServletRequest,javax.servlet.http.HttpServletResponse)
+2017-10-09 11:06:36.715  INFO 360 --- [main] o.s.w.s.handler.SimpleUrlHandlerMapping  : Mapped URL path [/webjars/**] onto handler of type [class org.springframework.web.servlet.resource.ResourceHttpRequestHandler]
+2017-10-09 11:06:36.715  INFO 360 --- [main] o.s.w.s.handler.SimpleUrlHandlerMapping  : Mapped URL path [/**] onto handler of type [class org.springframework.web.servlet.resource.ResourceHttpRequestHandler]
+2017-10-09 11:06:36.757  INFO 360 --- [main] o.s.w.s.handler.SimpleUrlHandlerMapping  : Mapped URL path [/**/favicon.ico] onto handler of type [class org.springframework.web.servlet.resource.ResourceHttpRequestHandler]
+2017-10-09 11:06:37.100  INFO 360 --- [main] o.s.j.e.a.AnnotationMBeanExporter        : Registering beans for JMX exposure on startup
+2017-10-09 11:06:37.153  INFO 360 --- [main] s.b.c.e.t.TomcatEmbeddedServletContainer : Tomcat started on port(s): 8080 (http)
+2017-10-09 11:06:37.156  INFO 360 --- [main] com.bijenkorf.Application                : Started Application in 9.486 seconds (JVM running for 10.345)
+2017-10-09 11:07:12.424  INFO 360 --- [http-nio-8080-exec-2] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring FrameworkServlet 'dispatcherServlet'
+2017-10-09 11:07:12.424  INFO 360 --- [http-nio-8080-exec-2] o.s.web.servlet.DispatcherServlet        : FrameworkServlet 'dispatcherServlet': initialization started
+2017-10-09 11:07:12.449  INFO 360 --- [http-nio-8080-exec-2] o.s.web.servlet.DispatcherServlet        : FrameworkServlet 'dispatcherServlet': initialization completed in 25 ms
+2017-10-09 11:07:12.466  WARN 360 --- [http-nio-8080-exec-2] o.s.web.servlet.PageNotFound             : Request method 'GET' not supported
+2017-10-09 11:08:15.184  INFO 360 --- [RMI TCP Connection(2)-127.0.0.1] inMXBeanRegistrar$SpringApplicationAdmin : Application shutdown requested.
+2017-10-09 11:08:15.184  INFO 360 --- [RMI TCP Connection(2)-127.0.0.1] ationConfigEmbeddedWebApplicationContext : Closing org.springframework.boot.context.embedded.AnnotationConfigEmbeddedWebApplicationContext@71104a4: startup date [Mon Oct 09 11:06:28 CEST 2017]; root of context hierarchy
+2017-10-09 11:08:15.185  INFO 360 --- [RMI TCP Connection(2)-127.0.0.1] o.s.j.e.a.AnnotationMBeanExporter        : Unregistering JMX-exposed beans on shutdown
+2017-10-09 11:08:15.186  INFO 360 --- [RMI TCP Connection(2)-127.0.0.1] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2017-10-09 11:08:15.187  INFO 360 --- [RMI TCP Connection(2)-127.0.0.1] org.hibernate.tool.hbm2ddl.SchemaExport  : HHH000227: Running hbm2ddl schema export
+2017-10-09 11:08:15.192  INFO 360 --- [RMI TCP Connection(2)-127.0.0.1] org.hibernate.tool.hbm2ddl.SchemaExport  : HHH000230: Schema export complete

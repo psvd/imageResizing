@@ -1,6 +1,6 @@
 package com.bijenkorf.enumerator;
 
-public enum Type {
+public enum Type {	
 	JPG("JPG"),
 	PNG("PNG");
 

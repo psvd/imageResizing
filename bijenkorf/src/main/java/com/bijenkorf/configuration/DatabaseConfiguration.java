@@ -5,6 +5,8 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class DatabaseConfiguration {
+	@Value("${source.root.url}")	
+	private String rootUrl;
 	@Value("${logdb.endpoint}")
 	private String endpoint;	
 	@Value("${logdb.name}")
@@ -12,8 +14,14 @@ public class DatabaseConfiguration {
 	@Value("${logdb.username}")	
 	private String username;	
 	@Value("${logdb.password}")
-	private String password;
+	private String password;	
 	
+	public String getRootUrl() {
+		return rootUrl;
+	}
+	public void setRootUrl(String rootUrl) {
+		this.rootUrl = rootUrl;
+	}
 	public String getEndpoint() {
 		return endpoint;
 	}
