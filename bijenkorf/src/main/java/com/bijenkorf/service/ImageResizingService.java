@@ -12,8 +12,8 @@ public interface ImageResizingService {
 	Image uploadImage(String reference) throws CustomImageException;
 	void deleteImage(String predefinedTypeName, String reference);		
 	void hasPredefinedTypeName(String predefinedTypeName) throws CustomImageException;		
-	BufferedImage downloadOriginalImageS3(String reference) throws CustomImageException;
-	BufferedImage downloadOriginalImage(String reference) throws CustomImageException;
+	BufferedImage getOriginalImageFromS3(String reference) throws CustomImageException;
+	BufferedImage getOriginalImageFromSource(String reference) throws CustomImageException;
 	void hasImageByReference(String reference) throws CustomImageException;
 	Image findImageByReference(String reference);
 }

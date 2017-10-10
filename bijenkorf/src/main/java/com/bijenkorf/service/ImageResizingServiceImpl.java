@@ -47,7 +47,11 @@ public class ImageResizingServiceImpl implements ImageResizingService {
 	@Override
 	public InputStream downloadImage(String predefinedTypeName, String reference) throws CustomImageException {	
 		basicValidationCheck(predefinedTypeName, reference);
-		InputStream inputStream = amazonS3Service.downloadImage(predefinedTypeName, reference);
+		InputStream inputStream = amazonS3Service.downloadImage(predefinedTypeName, reference);		
+
+		if (inputStream == null) {
+			inputStream = optimizeOriginalImage(reference);
+		}
 
 		return inputStream;
 	}
@@ -56,14 +60,7 @@ public class ImageResizingServiceImpl implements ImageResizingService {
 	@Override
 	public Image uploadImage(String reference) throws CustomImageException {
 		Image image = findImageByReference(reference);
-		try {
-			InputStream inputStream = uploadOriginalImage(reference);			
-			amazonS3Service.uploadImage(inputStream, image.getPredefinedType().getPredefinedImageTypeName(), image.getReference());
-		} catch (IOException e) {
-			LOGGER.warn ("action:{}, request:{}", "uploadImage", reference); 
-			throw new CustomImageException(ApplicationMessageKey.NOT_FOUND);		
-		} 
-
+		optimizeOriginalImage(reference);
 		return image;
 	}
 
@@ -83,7 +80,7 @@ public class ImageResizingServiceImpl implements ImageResizingService {
 	}
 
 	@Override
-	public BufferedImage downloadOriginalImageS3(String reference) throws CustomImageException {				
+	public BufferedImage getOriginalImageFromS3(String reference) throws CustomImageException {				
 		BufferedImage originalImageS33 = null;
 		try {
 			S3ObjectInputStream originalS3Image = amazonS3Service.downloadOriginalImage(reference);	
@@ -97,7 +94,7 @@ public class ImageResizingServiceImpl implements ImageResizingService {
 	}
 
 	@Override
-	public BufferedImage downloadOriginalImage(String reference) throws CustomImageException {
+	public BufferedImage getOriginalImageFromSource(String reference) throws CustomImageException {
 		BufferedImage originalImage = null;
 		try {
 			String absoluteFilePath = databaseConfiguration.getRootUrl() + File.separator + reference;
@@ -115,13 +112,13 @@ public class ImageResizingServiceImpl implements ImageResizingService {
 		return false;
 	}
 
-	private InputStream uploadOriginalImage(String reference) throws CustomImageException {
+	private InputStream optimizeOriginalImage(String reference) throws CustomImageException {
 		BufferedImage originalImage = null;
 
 		if (hasOriginalImageS3(reference)) {
-			originalImage = downloadOriginalImageS3(reference);
+			originalImage = getOriginalImageFromS3(reference);
 		}else {
-			originalImage = downloadOriginalImage(reference);
+			originalImage = getOriginalImageFromSource(reference);
 		}
 
 		if (originalImage == null) {
@@ -131,6 +128,12 @@ public class ImageResizingServiceImpl implements ImageResizingService {
 			BufferedImage bufferedImage = resizeImage(originalImage, image);	
 
 			InputStream inputStream = toInputStream(bufferedImage, image.getPredefinedType().getType());
+			try {
+				amazonS3Service.uploadImage(inputStream, image.getPredefinedType().getPredefinedImageTypeName(), image.getReference());
+			} catch (IOException e) {
+				LOGGER.warn ("action:{}, request:{}", "uploadImage", reference); 
+				throw new CustomImageException(ApplicationMessageKey.NOT_FOUND);
+			}
 
 			return inputStream;
 		}		
@@ -170,11 +173,11 @@ public class ImageResizingServiceImpl implements ImageResizingService {
 	@Override
 	public Image findImageByReference(String reference) {
 		/*Image image = imageRepository.findOne(reference);
-		
+
 		if (image == null) {
 			throw new CustomImageException(ApplicationMessageKey.NOT_FOUND);
 		}*/
-		
+
 		Image image = new Image();
 		image.setDummySeoName("LV");
 		PredefinedImageType predefinedType = new PredefinedImageType();
