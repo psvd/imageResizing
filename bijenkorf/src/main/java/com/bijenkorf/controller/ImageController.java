@@ -50,8 +50,8 @@ public class ImageController {
 		imageService.deleteImage(predefinedTypeName, reference);
 	}
 
-	@RequestMapping(value = "/image/imageResizing/{reference}", method = RequestMethod.GET)
-	public Image uploadImage(@PathVariable String reference) {
+	@RequestMapping(value = "/image/imageResizing", method = RequestMethod.GET)
+	public Image uploadImage(@RequestParam(value = "reference") String reference) {
 		Image image = null;
 		try {			
 			image = imageService.uploadImage(reference);
