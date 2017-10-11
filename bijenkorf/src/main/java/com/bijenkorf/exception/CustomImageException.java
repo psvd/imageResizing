@@ -3,7 +3,7 @@ package com.bijenkorf.exception;
 import com.amazonaws.AmazonClientException;
 import com.bijenkorf.enumerator.ApplicationMessageKey;
 
-public class CustomImageException extends Exception {
+public class CustomImageException extends RuntimeException {
 
 	private static final long serialVersionUID = 7268463153107646478L;
 	

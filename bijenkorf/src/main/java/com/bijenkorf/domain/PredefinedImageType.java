@@ -6,9 +6,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
-import com.bijenkorf.enumerator.ScaleType;
-import com.bijenkorf.enumerator.Type;
-
 @Entity(name = "IRS_IMAGE_TYPE")
 public class PredefinedImageType {
 
@@ -24,9 +21,9 @@ public class PredefinedImageType {
 	@Column(name = "X_IMAGE_QUALITY", nullable = false)
 	private int quality;
 	@Column(name = "X_IMAGE_TYPE", nullable = false)
-	private Type type;
+	private String type;
 	@Column(name = "X_IMAGE_SCALE", nullable = false)
-	private ScaleType scaleType;
+	private String scaleType;
 	@Column(name = "X_IMAGE_SOURCE_NAME", nullable = true)
 	private String sourceName;
 	
@@ -60,16 +57,16 @@ public class PredefinedImageType {
 	public void setQuality(int quality) {
 		this.quality = quality;
 	}
-	public Type getType() {
+	public String getType() {
 		return type;
 	}
-	public void setType(Type type) {
+	public void setType(String type) {
 		this.type = type;
 	}
-	public ScaleType getScaleType() {
+	public String getScaleType() {
 		return scaleType;
 	}
-	public void setScaleType(ScaleType scaleType) {
+	public void setScaleType(String scaleType) {
 		this.scaleType = scaleType;
 	}
 	public String getSourceName() {
