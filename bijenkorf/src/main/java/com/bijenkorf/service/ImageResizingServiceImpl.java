@@ -35,7 +35,6 @@ public class ImageResizingServiceImpl implements ImageResizingService {
 	private PredefinedImageTypeRepository predefinedImageTypeRepository;
 
 
-
 	@Autowired
 	public ImageResizingServiceImpl(AmazonS3Service amazonS3Service, DatabaseConfiguration databaseConfiguration, ImageRepository imageRepository, PredefinedImageTypeRepository predefinedImageTypeRepository) {		
 		this.amazonS3Service = amazonS3Service;		
@@ -98,8 +97,8 @@ public class ImageResizingServiceImpl implements ImageResizingService {
 			String absoluteFilePath = databaseConfiguration.getRootUrl() + File.separator + reference;
 			originalImage = ImageIO.read(new File(absoluteFilePath));
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			LOGGER.error("action:{}, request:{}", "getOriginalImageFromSource", reference); 
+			throw new CustomImageException(ApplicationMessageKey.NOT_FOUND);
 		}	
 
 		return originalImage;
@@ -133,7 +132,7 @@ public class ImageResizingServiceImpl implements ImageResizingService {
 		return false;
 	}
 
-	private InputStream optimizeOriginalImage(String reference) throws CustomImageException {
+	private InputStream optimizeOriginalImage(String reference) {
 		BufferedImage originalImage = null;
 
 		if (hasOriginalImageS3(reference)) {
@@ -152,7 +151,7 @@ public class ImageResizingServiceImpl implements ImageResizingService {
 			try {
 				amazonS3Service.uploadImage(inputStream, image.getPredefinedType().getPredefinedImageTypeName(), image.getReference());
 			} catch (IOException e) {
-				LOGGER.warn ("action:{}, request:{}", "uploadImage", reference); 
+				LOGGER.warn("action:{}, request:{}", "uploadImage", reference); 
 				throw new CustomImageException(ApplicationMessageKey.NOT_FOUND);
 			}
 
@@ -180,7 +179,7 @@ public class ImageResizingServiceImpl implements ImageResizingService {
 	}
 
 
-	private void basicValidationCheck(String predefinedTypeName, String reference) throws CustomImageException {
+	private void basicValidationCheck(String predefinedTypeName, String reference) {
 		hasImageByReference(reference);
 		hasPredefinedTypeName(predefinedTypeName);
 	}	
