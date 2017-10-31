@@ -16,7 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.amazonaws.services.s3.model.S3ObjectInputStream;
-import com.bijenkorf.configuration.DatabaseConfiguration;
+import com.bijenkorf.configuration.ImageResizingSourceConfiguration;
 import com.bijenkorf.domain.Image;
 import com.bijenkorf.domain.PredefinedImageType;
 import com.bijenkorf.enumerator.ApplicationMessageKey;
@@ -30,13 +30,13 @@ public class ImageResizingServiceImpl implements ImageResizingService {
 	private AmazonS3Service amazonS3Service;	
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(ImageResizingServiceImpl.class);
-	private DatabaseConfiguration databaseConfiguration;
+	private ImageResizingSourceConfiguration databaseConfiguration;
 	private ImageRepository imageRepository;
 	private PredefinedImageTypeRepository predefinedImageTypeRepository;
 
 
 	@Autowired
-	public ImageResizingServiceImpl(AmazonS3Service amazonS3Service, DatabaseConfiguration databaseConfiguration, ImageRepository imageRepository, PredefinedImageTypeRepository predefinedImageTypeRepository) {		
+	public ImageResizingServiceImpl(AmazonS3Service amazonS3Service, ImageResizingSourceConfiguration databaseConfiguration, ImageRepository imageRepository, PredefinedImageTypeRepository predefinedImageTypeRepository) {		
 		this.amazonS3Service = amazonS3Service;		
 		this.databaseConfiguration = databaseConfiguration;
 		this.imageRepository = imageRepository;

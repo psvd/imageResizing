@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-public class DatabaseConfiguration {
+public class ImageResizingSourceConfiguration {
 	@Value("${source.root.url}")	
 	private String rootUrl;
 	@Value("${logdb.endpoint}")

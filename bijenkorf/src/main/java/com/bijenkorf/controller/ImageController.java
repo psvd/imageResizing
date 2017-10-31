@@ -40,8 +40,15 @@ public class ImageController {
 
 	@RequestMapping(value = "/image/flush/{predefinedTypeName}", method = RequestMethod.GET)
 	public void flushImage(@PathVariable("predefinedTypeName") String predefinedTypeName, 
-			@RequestParam(value = "reference", required = true) String reference) {
-
+			@RequestParam(value = "reference", required = true) String reference) {		
 		imageService.deleteImage(predefinedTypeName, reference);
+	}
+	
+	public static void main(String...strings) {
+		String x = "test";
+		String y = new String("test");
+		
+		System.out.println((x.equals(y)));
+		System.out.println((x == y));
 	}
 }
